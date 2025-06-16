@@ -1,0 +1,59 @@
+# This GitHub action can publish assets for release when a tag is created.
+# Currently its setup to run on any tag that matches the pattern "v*" (ie. v0.1.0).
+#
+# This uses an action (crazy-max/ghaction-import-gpg) that assumes you set your
+# private key in the `GPG_PRIVATE_KEY` secret and passphrase in the `PASSPHRASE`
+# secret. If you would rather own your own GPG handling, please fork this action
+# or use an alternative one for key handling.
+#
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  id-token: write
+  contents: read
+  attestations: write
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Generate Short Lived OAuth App Token
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+          owner: "${{ github.repository_owner }}"
+          repositories: "${{ github.event.repository.name }}"
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0
+        with:
+          gpg_private_key: "${{ secrets.KEY }}"
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@9c156ee8a17a598857849441385a2041ef570552 # v6.3.0
+        with:
+          version: '~> v2'
+          args: release --clean
+        env:
+          GPG_FINGERPRINT: "${{ steps.import_gpg.outputs.fingerprint }}"
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
+
+      - name: Attest
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2
+        with:
+          subject-path: ./dist/*.zip
+        env:
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
