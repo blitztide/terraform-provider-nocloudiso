@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  PKG_NAME: "terraform-provider-helm"
+  PKG_NAME: "terraform-provider-nocloudiso"
 
 jobs:
   get-go-version:
