@@ -7,7 +7,7 @@ import (
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		ResourcesMap: map[string]*schema.Resource{
-			"nocloud_iso_file": resourceIsoFile(),
+			"nocloudiso_iso_file": resourceIsoFile(),
 		},
 	}
 }
