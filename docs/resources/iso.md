@@ -18,11 +18,6 @@ resource "iso_file" "test" {
 		mac_address: 'bc:24:11:6e:43:b7'  
 		subnets:  
 		- type: dhcp4  
-		- type: nameserver  
-		address:  
-		- '185.12.64.1'  
-		search:  
-		- 'securityblue.team'  
 		EOF  
 		"user-data" = <<-EOF  
 		#cloud-config  
@@ -30,7 +25,7 @@ resource "iso_file" "test" {
 		list: |  
 		ubuntu:example  
 		expire: false  
-		hostname: newiso  
+		hostname: cloudinit  
 		packages:  
 		- qemu-guest-agent  
 		users:  
