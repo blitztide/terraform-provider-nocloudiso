@@ -3,12 +3,13 @@ module terraform-provider-nocloudiso
 go 1.24.4
 
 require (
-	github.com/diskfs/go-diskfs v1.6.0
+	github.com/diskfs/go-diskfs v1.7.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.37.0
 )
 
 require (
 	github.com/agext/levenshtein v1.2.2 // indirect
+	github.com/anchore/go-lzo v0.1.0 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
 	github.com/djherbis/times v1.6.0 // indirect
 	github.com/elliotwutingfeng/asciiset v0.0.0-20230602022725-51bbb787efab // indirect
