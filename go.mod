@@ -4,7 +4,7 @@ go 1.24.4
 
 require (
 	github.com/diskfs/go-diskfs v1.7.0
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.37.0
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.38.1
 )
 
 require (
